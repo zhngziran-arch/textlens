@@ -1,0 +1,82 @@
+<view class="container">
+  <view class="section-header">
+    <view class="page-title">文本特征与推荐流量规律</view>
+    <view class="page-subtitle">结合本账号历史文稿的真实推荐阅读数，通过秩相关分析定位助推或拉低流量的文本特征</view>
+  </view>
+
+  <view class="action-row">
+    <view class="tl-btn tl-btn-subtle flex-1" hover-class="tl-btn-hover" bindtap="loadDemo">
+      载入演示数据 (7篇)
+    </view>
+    <view class="tl-btn tl-btn-danger" hover-class="tl-btn-hover" bindtap="clearHistory">
+      清空本地归档
+    </view>
+  </view>
+
+  <!-- 1. 相关性图谱卡片 -->
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">特征相关性图谱 (Spearman ρ)</text>
+    </view>
+    <view wx:if="{{insightsData && insightsData.correlations && insightsData.correlations.length}}">
+      <view class="axis-guide">
+        <text class="axis-neg">← 负相关 (拉低推流)</text>
+        <text class="axis-zero">0</text>
+        <text class="axis-pos">正相关 (助推推流) →</text>
+      </view>
+      <view class="corr-list">
+        <view class="corr-item" wx:for="{{insightsData.correlations}}" wx:key="key">
+          <view class="corr-head">
+            <text class="corr-name">{{item.label}}</text>
+            <text class="corr-score {{item.isPos ? 'text-pos' : 'text-neg'}}">{{item.rhoText}} · {{item.strength}}</text>
+          </view>
+          <view class="bipolar-track">
+            <view class="center-line"></view>
+            <view
+              class="bipolar-bar {{item.isPos ? 'bar-pos' : 'bar-neg'}}"
+              style="left: {{item.leftPct}}%; width: {{item.widthPct}}%;"
+            ></view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="empty-block" wx:else>
+      <text class="empty-title">{{insightsData.note || '含推荐阅读数的归档文稿不足 6 篇'}}</text>
+      <text class="empty-sub">点击上方「载入演示数据 (7篇)」可立即预览真实相关性图谱</text>
+    </view>
+  </view>
+
+  <!-- 2. 本地文稿归档列表 -->
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">本地文稿归档 ({{historyList.length}} 篇)</text>
+      <text class="muted-text">修改数字自动重算</text>
+    </view>
+
+    <view class="hist-list" wx:if="{{historyList.length}}">
+      <view class="hist-card" wx:for="{{historyList}}" wx:key="id">
+        <view class="hist-top">
+          <text class="hist-title">{{item.title}}</text>
+          <view class="del-btn" data-id="{{item.id}}" bindtap="deleteItem">删除</view>
+        </view>
+        <view class="hist-meta">
+          <text class="hist-info">{{item.date}} · {{item.content.length}} 字</text>
+          <view class="reads-input-box">
+            <text class="reads-label">推荐量</text>
+            <input
+              class="reads-in"
+              type="number"
+              placeholder="点击填写"
+              value="{{item.recommendedReads}}"
+              data-id="{{item.id}}"
+              bindblur="onReadsBlur"
+            />
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="empty-block" wx:else>
+      <text class="empty-sub">归档库为空。在「单篇审阅」中点击「存入归档」，即可在此积累你的账号历史数据。</text>
+    </view>
+  </view>
+</view>

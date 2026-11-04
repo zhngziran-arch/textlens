@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- 纯净温润背景 -->
+  <rect width="1024" height="1024" fill="#FFFFFF" />
+
+  <g transform="translate(512, 512)">
+    <!-- 极简单线放大镜轮廓（圆环 + 手柄，自然流线） -->
+    <!-- 镜框大圆 -->
+    <circle cx="-50" cy="-50" r="220" fill="#FAFAFA" stroke="#18181B" stroke-width="28" stroke-linecap="round" />
+
+    <!-- 镜片里的小稿纸/折角便签 (Paper note) -->
+    <path d="M -130 -140 L 0 -140 L 40 -100 L 40 40 L -130 40 Z" fill="#FFFFFF" stroke="#18181B" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- 折角线 -->
+    <path d="M 0 -140 L 0 -100 L 40 -100" fill="none" stroke="#18181B" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" />
+    
+    <!-- 稿纸上的文本行 -->
+    <line x1="-95" y1="-80" x2="-25" y2="-80" stroke="#18181B" stroke-width="16" stroke-linecap="round" />
+    <line x1="-95" y1="-40" x2="10" y2="-40" stroke="#18181B" stroke-width="16" stroke-linecap="round" />
+    <line x1="-95" y1="0" x2="-10" y2="0" stroke="#18181B" stroke-width="16" stroke-linecap="round" />
+
+    <!-- 透镜手柄：圆柱形单线手柄，底部有小圆头 -->
+    <path d="M 105 105 L 230 230" stroke="#18181B" stroke-width="32" stroke-linecap="round" />
+    <circle cx="245" cy="245" r="24" fill="#18181B" />
+
+    <!-- 审阅火花：活泼的小星号（简笔画手绘感） -->
+    <path d="M 170 -190 Q 185 -175 200 -190 Q 185 -205 170 -190 Z" fill="#E11D48" />
+    <circle cx="-200" cy="-180" r="10" fill="#18181B" />
+    <circle cx="-170" cy="-210" r="6" fill="#18181B" />
+  </g>
+</svg>

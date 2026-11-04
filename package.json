@@ -1,0 +1,11 @@
+{
+  "name": "textlens",
+  "version": "0.2.0",
+  "description": "开源跨平台中文内容体检工具（纯前端，零依赖，可直接托管于 GitHub Pages / Netlify）",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "start": "node scripts/preview.js",
+    "test": "node tests/engine.test.js"
+  }
+}

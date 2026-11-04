@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- 背景渐变 -->
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181b" />
+      <stop offset="100%" stop-color="#09090b" />
+    </linearGradient>
+
+    <!-- 棱镜折射渐变 -->
+    <linearGradient id="prism-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+
+    <linearGradient id="glow-teal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2dd4bf" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+
+    <!-- 柔和阴影 -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.65" />
+    </filter>
+  </defs>
+
+  <!-- 底板 -->
+  <rect width="1024" height="1024" fill="url(#bg2)" />
+
+  <!-- 极简几何构型：大圆透镜环 + 斜向 45 度透镜光锥 -->
+  <g filter="url(#shadow)">
+    <!-- 环绕光环 -->
+    <circle cx="512" cy="512" r="320" fill="none" stroke="#27272a" stroke-width="28" />
+    <circle cx="512" cy="512" r="320" fill="none" stroke="url(#prism-grad)" stroke-width="12" stroke-linecap="round" stroke-dasharray="380 1200" />
+
+    <!-- 透镜镜面本体 -->
+    <circle cx="470" cy="470" r="210" fill="#18181b" stroke="#3f3f46" stroke-width="6" />
+
+    <!-- 斜切手柄 / 聚焦光束 (45° 几何笔触) -->
+    <path d="M 618 618 L 748 748 C 766 766 766 796 748 814 C 730 832 700 832 682 814 L 552 684 Z" fill="url(#prism-grad)" />
+
+    <!-- 镜片高光月牙弧 -->
+    <path d="M 330 470 A 140 140 0 0 1 470 330" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-opacity="0.9" />
+
+    <!-- 镜心观察十字点 (精准定位与校对) -->
+    <circle cx="470" cy="470" r="16" fill="url(#glow-teal)" />
+    <line x1="470" y1="420" x2="470" y2="444" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-opacity="0.8" />
+    <line x1="470" y1="496" x2="470" y2="520" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-opacity="0.8" />
+    <line x1="420" y1="470" x2="444" y2="470" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-opacity="0.8" />
+    <line x1="496" y1="470" x2="520" y2="470" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-opacity="0.8" />
+  </g>
+</svg>

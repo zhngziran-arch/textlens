@@ -1,0 +1,9 @@
+{
+  "platforms": [
+    { "id": "general", "file": "platforms/general.json" },
+    { "id": "wechat", "file": "platforms/wechat.json" },
+    { "id": "xhs", "file": "platforms/xhs.json" },
+    { "id": "zhihu", "file": "platforms/zhihu.json" },
+    { "id": "toutiao", "file": "platforms/toutiao.json" }
+  ]
+}

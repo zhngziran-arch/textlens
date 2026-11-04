@@ -1,0 +1,129 @@
+<view class="container">
+  <view class="section-header">
+    <view class="page-title">多篇同质化对比</view>
+    <view class="page-subtitle">检测同一账号近期文稿的选题扎堆、结构套路与跨篇复用句</view>
+  </view>
+
+  <!-- 顶部 4 等分快捷操作条 -->
+  <view class="batch-bar">
+    <view class="tl-btn tl-btn-subtle flex-1" hover-class="tl-btn-hover" bindtap="addItem">＋ 新增一篇</view>
+    <view class="tl-btn tl-btn-subtle flex-1" hover-class="tl-btn-hover" bindtap="loadDemo">日更示例</view>
+    <view class="tl-btn tl-btn-subtle flex-1" hover-class="tl-btn-hover" bindtap="loadFromHistory">调取归档</view>
+    <view class="tl-btn tl-btn-danger" hover-class="tl-btn-hover" bindtap="clearAll">清空</view>
+  </view>
+
+  <!-- 文稿折叠卡片组 -->
+  <view class="deck-list">
+    <view class="b-card" wx:for="{{items}}" wx:key="id">
+      <view class="b-card-head" data-index="{{index}}" bindtap="toggleCollapse">
+        <text class="idx-badge">{{index + 1}}</text>
+        <text class="b-title-text">{{item.title || '（点击展开填写标题与正文）'}}</text>
+        <text class="b-char-count">{{item.content.length}} 字</text>
+        <text class="collapse-arrow">{{item.collapsed ? '展开' : '收起'}}</text>
+        <view class="del-btn" data-index="{{index}}" catchtap="removeItem">✕</view>
+      </view>
+      <view class="b-card-body" wx:if="{{!item.collapsed}}">
+        <textarea
+          class="b-input"
+          auto-height
+          maxlength="120"
+          placeholder="输入本篇文稿标题…"
+          placeholder-class="placeholder-muted"
+          value="{{item.title}}"
+          data-index="{{index}}"
+          bindinput="onTitleChange"
+        />
+        <textarea
+          class="b-area"
+          maxlength="-1"
+          placeholder="粘贴本篇文稿正文（至少 100 字）…"
+          placeholder-class="placeholder-muted"
+          value="{{item.content}}"
+          data-index="{{index}}"
+          bindinput="onContentChange"
+        />
+      </view>
+    </view>
+  </view>
+
+  <view class="tl-btn tl-btn-primary btn-run-batch" hover-class="tl-btn-hover" bindtap="runBatch">
+    开始多篇同质化对比
+  </view>
+
+  <!-- 对比报告区域 -->
+  <view class="batch-report" wx:if="{{report}}">
+    <!-- 总评卡片 -->
+    <view class="card hero-score-card">
+      <view class="score-circle level-{{report.level.key}}">
+        <text class="score-number">{{report.overall}}</text>
+        <text class="score-level">{{report.level.label}}</text>
+      </view>
+      <view class="score-info">
+        <view class="hero-title">{{report.count}} 篇同质化综合评估</view>
+        <view class="muted-text">已完成两两交叉比对与结构指纹分析</view>
+      </view>
+    </view>
+
+    <!-- 关键指标卡片 -->
+    <view class="card">
+      <view class="card-header">
+        <text class="card-title">同质化核心维度</text>
+        <text class="muted-text">越低代表差异化越好</text>
+      </view>
+      <view class="dim-list">
+        <view class="dim-item" wx:for="{{report.dimsList}}" wx:key="key">
+          <view class="dim-label-row">
+            <text class="dim-name">{{item.label}}</text>
+            <text class="dim-val text-{{item.level.key}}">{{item.score}}</text>
+          </view>
+          <view class="progress-bar">
+            <view class="progress-fill bg-{{item.level.key}}" style="width: {{item.score}}%;"></view>
+          </view>
+          <text class="dim-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 两两对比矩阵 -->
+    <view class="card">
+      <view class="card-header">
+        <text class="card-title">两两相似度矩阵</text>
+      </view>
+      <view class="pair-list">
+        <view class="pair-card" wx:for="{{report.pairs}}" wx:key="index">
+          <text class="pair-names">《{{item.nameA}}》 ↔ 《{{item.nameB}}》</text>
+          <view class="metrics-grid">
+            <view class="m-pill">标题重合 <text class="m-val">{{item.titlePct}}%</text></view>
+            <view class="m-pill">核心选题 <text class="m-val">{{item.topicPct}}%</text></view>
+            <view class="m-pill">正文指纹 <text class="m-val">{{item.contentPct}}%</text></view>
+            <view class="m-pill">结构套路 <text class="m-val">{{item.structurePct}}%</text></view>
+          </view>
+          <view class="dup-box" wx:if="{{item.dupCount}}">
+            <text class="dup-alert">发现 {{item.dupCount}} 处跨篇高度相似句：</text>
+            <view class="dup-example" wx:for="{{item.dupExamples}}" wx:for-item="ex" wx:for-index="exIdx" wx:key="exIdx">
+              <text class="dup-a">A: {{ex[0]}}</text>
+              <text class="dup-b">B: {{ex[1]}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 整体建议 -->
+    <view class="card">
+      <view class="card-header">
+        <text class="card-title">去同质化调整建议</text>
+      </view>
+      <view class="advice-list">
+        <view class="advice-item" wx:for="{{report.suggestions}}" wx:key="index">
+          <text class="rule-tag">{{item.ruleId}}</text>
+          <text class="advice-desc">{{item.text}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="tl-btn tl-btn-secondary btn-copy-batch" hover-class="tl-btn-hover" bindtap="copyReport">
+      复制 Markdown 对比报告
+    </view>
+  </view>
+</view>

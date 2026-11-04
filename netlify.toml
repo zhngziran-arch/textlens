@@ -1,0 +1,11 @@
+# Netlify 零构建纯静态部署配置：把仓库推上 GitHub 后，在 Netlify 导入该仓库即可直接上线
+[build]
+  publish = "."
+  command = "node tests/engine.test.js"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "no-referrer"

@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/batch/batch",
+    "pages/history/history",
+    "pages/rules/rules"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#F5F4EF",
+    "navigationBarTitleText": "TextLens 创作透镜",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F4EF"
+  },
+  "tabBar": {
+    "color": "#8A8880",
+    "selectedColor": "#141413",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "单篇审阅",
+        "iconPath": "assets/tabs/single.png",
+        "selectedIconPath": "assets/tabs/single_active.png"
+      },
+      {
+        "pagePath": "pages/batch/batch",
+        "text": "多篇对比",
+        "iconPath": "assets/tabs/batch.png",
+        "selectedIconPath": "assets/tabs/batch_active.png"
+      },
+      {
+        "pagePath": "pages/history/history",
+        "text": "流量规律",
+        "iconPath": "assets/tabs/insights.png",
+        "selectedIconPath": "assets/tabs/insights_active.png"
+      },
+      {
+        "pagePath": "pages/rules/rules",
+        "text": "规则手册",
+        "iconPath": "assets/tabs/rules.png",
+        "selectedIconPath": "assets/tabs/rules_active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

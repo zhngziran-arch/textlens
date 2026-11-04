@@ -1,0 +1,238 @@
+/**
+ * TextLens 创作透镜 · 移动端高精度温润纸感设计系统
+ * 针对手机屏幕 (750rpx) 优化屏占比、触控热区与防溢出排版
+ **/
+
+page {
+  background-color: #F5F4EF;
+  color: #141413;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "HarmonyOS Sans SC", "Microsoft YaHei", sans-serif;
+  font-size: 28rpx;
+  line-height: 1.6;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+view, text, scroll-view, input, textarea, button {
+  box-sizing: border-box;
+}
+
+/* 彻底重置原生 button 默认高优样式，防止溢出 */
+button {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  line-height: inherit;
+  font-size: inherit;
+  width: auto;
+}
+button::after {
+  border: none;
+  display: none;
+}
+
+/* 页面容器：高屏占比 (710rpx 有效宽 / 750rpx) */
+.container {
+  padding: 16rpx 20rpx 56rpx;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* 顶部页面导语（紧凑版） */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 4rpx 4rpx 16rpx;
+}
+
+.page-title {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #141413;
+  letter-spacing: -0.5rpx;
+}
+
+.page-subtitle {
+  font-size: 24rpx;
+  color: #78766F;
+  margin-top: 4rpx;
+  line-height: 1.45;
+}
+
+/* 卡片容器：自适应高度、柔和纸张边框 */
+.card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  border: 1rpx solid #E5E3DC;
+  padding: 26rpx 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(20, 20, 19, 0.03);
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18rpx;
+  gap: 12rpx;
+}
+
+.card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  min-width: 0;
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #141413;
+  letter-spacing: -0.3rpx;
+  line-height: 1.3;
+}
+
+.muted-text {
+  color: #85837B;
+  font-size: 24rpx;
+}
+
+/* 统一自定义触控按钮系统 (基于 view，100% 遵循 Flex 布局，绝不撑破容器) */
+.tl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16rpx;
+  font-size: 27rpx;
+  font-weight: 600;
+  padding: 0 28rpx;
+  height: 80rpx;
+  line-height: 1;
+  text-align: center;
+  transition: all 0.15s ease;
+  user-select: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tl-btn-hover {
+  transform: scale(0.98);
+  opacity: 0.88;
+}
+
+.tl-btn-primary {
+  background: #141413;
+  color: #FFFFFF;
+  box-shadow: 0 4rpx 12rpx rgba(20, 20, 19, 0.14);
+}
+
+.tl-btn-secondary {
+  background: #FFFFFF;
+  color: #141413;
+  border: 1.5rpx solid #D5D2C8;
+}
+
+.tl-btn-subtle {
+  background: #F5F4EF;
+  color: #4A4944;
+  border: 1rpx solid #E5E3DC;
+  height: 64rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  padding: 0 20rpx;
+  border-radius: 12rpx;
+}
+
+.tl-btn-danger {
+  background: #FFF1F2;
+  color: #BE123C;
+  border: 1rpx solid #FECDD3;
+  height: 64rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  padding: 0 20rpx;
+  border-radius: 12rpx;
+}
+
+.flex-1 {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 顶部平台切换分段胶囊 */
+.platform-bar {
+  display: flex;
+  background: #EAE8E0;
+  padding: 6rpx;
+  border-radius: 18rpx;
+  margin-bottom: 18rpx;
+  gap: 4rpx;
+}
+
+.pf-tab {
+  flex: 1;
+  text-align: center;
+  font-size: 25rpx;
+  font-weight: 500;
+  color: #5C5B55;
+  padding: 13rpx 0;
+  border-radius: 14rpx;
+  transition: all 0.18s ease;
+}
+
+.pf-tab.active {
+  background: #141413;
+  color: #FFFFFF;
+  font-weight: 600;
+  box-shadow: 0 2rpx 8rpx rgba(20, 20, 19, 0.16);
+}
+
+/* 通用规则编号微标 */
+.rule-tag {
+  font-size: 20rpx;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-weight: 600;
+  background: #EDEBE4;
+  color: #2C2B29;
+  padding: 4rpx 10rpx;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+  line-height: 1.25;
+  margin-top: 4rpx;
+}
+
+.rule-tag.tag-ai { background: #F3E8FF; color: #6B21A8; }
+.rule-tag.tag-info { background: #E0F2FE; color: #0369A1; }
+.rule-tag.tag-pf { background: #FFE4E6; color: #BE123C; }
+.rule-tag.tag-dup { background: #FCE7F3; color: #9D174D; }
+
+/* 风险色彩体系 */
+.text-low { color: #0F766E; }
+.text-mid { color: #B45309; }
+.text-high { color: #BE123C; }
+.text-info { color: #0369A1; }
+
+.bg-low { background-color: #0F766E; }
+.bg-mid { background-color: #D97706; }
+.bg-high { background-color: #E11D48; }
+.bg-info { background-color: #0284C7; }
+
+/* 进度条轨道 */
+.progress-bar {
+  height: 12rpx;
+  background: #EFECE6;
+  border-radius: 99rpx;
+  overflow: hidden;
+  width: 100%;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 99rpx;
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}

@@ -1,0 +1,321 @@
+<view class="container">
+  <!-- 顶部平台切换胶囊 -->
+  <view class="platform-bar">
+    <view
+      wx:for="{{platforms}}"
+      wx:key="id"
+      class="pf-tab {{curPlatform === item.id ? 'active' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="onSelectPlatform"
+    >
+      {{item.name}}
+    </view>
+  </view>
+
+  <!-- 审阅视图三态切换器 -->
+  <view class="sub-nav" wx:if="{{report}}">
+    <view
+      class="sub-tab {{activeTab === 'write' ? 'active' : ''}}"
+      data-tab="write"
+      bindtap="switchTab"
+    >
+      编辑文稿
+    </view>
+    <view
+      class="sub-tab {{activeTab === 'report' ? 'active' : ''}}"
+      data-tab="report"
+      bindtap="switchTab"
+    >
+      诊断报告 ({{report.overall}}分)
+    </view>
+    <view
+      class="sub-tab {{activeTab === 'annotate' ? 'active' : ''}}"
+      data-tab="annotate"
+      bindtap="switchTab"
+    >
+      全文批注 ({{report.highlights.length}})
+    </view>
+  </view>
+
+  <!-- ==================== 1. 编辑文稿面板 ==================== -->
+  <view class="view-section view-write" wx:if="{{activeTab === 'write'}}">
+    <view class="card editor-card">
+      <!-- 顶部工具栏：标题 + 字数徽标 + 快速示例 -->
+      <view class="editor-top-bar">
+        <view class="editor-title-wrap">
+          <text class="card-title">文稿输入</text>
+          <text class="char-pill {{isReady ? 'ready' : ''}}">{{charCount}} 字</text>
+        </view>
+        <view class="demo-btns">
+          <view class="mini-pill" hover-class="tl-btn-hover" bindtap="loadDemoBad">示例:模板腔</view>
+          <view class="mini-pill" hover-class="tl-btn-hover" bindtap="loadDemoGood">示例:实测稿</view>
+          <view class="mini-pill danger" hover-class="tl-btn-hover" bindtap="clearInput">清空</view>
+        </view>
+      </view>
+
+      <!-- 自适应换行标题输入（彻底解决长标题右侧截断） -->
+      <view class="title-field-wrap">
+        <textarea
+          class="input-title"
+          auto-height
+          maxlength="120"
+          placeholder="输入文章或笔记标题（支持自动换行）…"
+          placeholder-class="placeholder-muted"
+          value="{{title}}"
+          bindinput="onTitleInput"
+        />
+      </view>
+
+      <!-- 紧凑型元数据栏 -->
+      <view class="meta-strip">
+        <view class="meta-cell">
+          <text class="meta-label">日期</text>
+          <input
+            class="meta-input"
+            type="text"
+            placeholder="YYYY-MM-DD"
+            placeholder-class="placeholder-muted"
+            value="{{date}}"
+            bindinput="onDateInput"
+          />
+        </view>
+        <view class="meta-divider"></view>
+        <view class="meta-cell">
+          <text class="meta-label">推荐量</text>
+          <input
+            class="meta-input"
+            type="number"
+            placeholder="选填阅读数"
+            placeholder-class="placeholder-muted"
+            value="{{reads}}"
+            bindinput="onReadsInput"
+          />
+        </view>
+      </view>
+
+      <!-- 正文主编辑区 -->
+      <textarea
+        class="content-area"
+        maxlength="-1"
+        placeholder="粘贴或输入正文内容（满 50 字即可开始审阅，全程在手机本地计算，绝不上传云端）…"
+        placeholder-class="placeholder-muted"
+        value="{{content}}"
+        bindinput="onContentInput"
+      />
+
+      <!-- 底部全宽双按钮栏（基于 view 弹性布局，零溢出） -->
+      <view class="editor-action-bar">
+        <view class="tl-btn tl-btn-secondary btn-save-archive" hover-class="tl-btn-hover" bindtap="saveToHistory">
+          存入归档
+        </view>
+        <view class="tl-btn tl-btn-primary flex-1" hover-class="tl-btn-hover" bindtap="runAnalysis">
+          开始审阅诊断
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部体裁基准与审阅重点卡（填补底部留白，随平台实时切换） -->
+    <view class="card spec-card">
+      <view class="spec-head">
+        <text class="spec-title">{{curSpec.name}} · 审阅基准</text>
+        <text class="spec-badge">纯本地引擎 v0.2</text>
+      </view>
+      <view class="spec-grid">
+        <view class="spec-box">
+          <text class="spec-label">常见篇幅</text>
+          <text class="spec-val">{{curSpec.lengthText}}</text>
+        </view>
+        <view class="spec-box">
+          <text class="spec-label">标题建议</text>
+          <text class="spec-val">{{curSpec.titleText}}</text>
+        </view>
+        <view class="spec-box">
+          <text class="spec-label">核心靶点</text>
+          <text class="spec-val">{{curSpec.focusText}}</text>
+        </view>
+      </view>
+      <text class="spec-tip">{{curSpec.tip}}</text>
+    </view>
+  </view>
+
+  <!-- ==================== 2. 诊断报告面板 ==================== -->
+  <view class="view-section" wx:if="{{activeTab === 'report' && report}}">
+    <!-- 核心总分卡片 -->
+    <view class="card hero-score-card">
+      <view class="score-ring level-{{report.level.key}}">
+        <text class="score-number">{{report.overall}}</text>
+        <text class="score-level">{{report.level.label}}</text>
+      </view>
+      <view class="score-info">
+        <view class="hero-head-row">
+          <text class="hero-title">{{report.platform.name}} · 体裁审阅</text>
+        </view>
+        <text class="hero-meta">正文 {{report.length}} 字 · 定位 {{report.highlights.length}} 处细节</text>
+        <view class="hero-quick-links">
+          <view class="quick-chip primary" data-tab="annotate" bindtap="switchTab">
+            查看原文批注 →
+          </view>
+          <view class="quick-chip" data-tab="write" bindtap="switchTab">
+            修改原稿
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 主要维度指数卡片 -->
+    <view class="card">
+      <view class="card-header">
+        <text class="card-title">核心维度指数</text>
+        <text class="muted-text">分数越低越自然</text>
+      </view>
+      <view class="dim-list">
+        <view class="dim-item" wx:for="{{report.dimsList}}" wx:key="key">
+          <view class="dim-label-row">
+            <text class="dim-name">{{item.label}}</text>
+            <view class="dim-score-group">
+              <text class="dim-val text-{{item.level.key}}">{{item.score}}</text>
+              <text class="dim-unit">/ 100</text>
+            </view>
+          </view>
+          <view class="progress-bar">
+            <view class="progress-fill bg-{{item.level.key}}" style="width: {{item.score}}%;"></view>
+          </view>
+          <text class="dim-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 信息增量五维卡片 -->
+    <view class="card">
+      <view class="card-header">
+        <text class="card-title">信息增量五维覆盖</text>
+        <text class="badge-pill">覆盖率 {{report.coveragePct}}%</text>
+      </view>
+      <view class="radar-list">
+        <view class="radar-row" wx:for="{{report.info.radar}}" wx:key="key">
+          <view class="radar-top">
+            <text class="radar-label">{{item.label}}</text>
+            <text class="muted-text">{{item.count}} 处 · {{item.density}}/千字</text>
+          </view>
+          <view class="progress-bar">
+            <view class="progress-fill bg-info" style="width: {{item.fillPct}}%;"></view>
+          </view>
+          <view class="radar-samples" wx:if="{{item.examples && item.examples.length}}">
+            <text class="sample-chip" wx:for="{{item.examples}}" wx:for-item="ex" wx:for-index="exIdx" wx:key="exIdx">{{ex}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 诊断提示条目（自适应高度，防溢出） -->
+    <view class="card">
+      <view class="card-header">
+        <text class="card-title">诊断提示</text>
+        <text class="muted-text">点击条目可查看详情</text>
+      </view>
+      <view class="finding-group" wx:if="{{report.findings && report.findings.length}}">
+        <view
+          class="finding-item"
+          wx:for="{{report.findings}}"
+          wx:key="index"
+          data-item="{{item}}"
+          bindtap="showRuleDetail"
+        >
+          <text class="rule-tag {{item.tagClass}}">{{item.ruleId}}</text>
+          <text class="finding-desc">{{item.text}}</text>
+        </view>
+      </view>
+      <view class="clean-pass" wx:else>
+        ✓ 未发现明显模板腔或平台敏感表述
+      </view>
+    </view>
+
+    <!-- 修订建议（完全自适应高度，绝不截断） -->
+    <view class="card">
+      <view class="card-header">
+        <text class="card-title">修订建议</text>
+        <text class="muted-text">针对性改写方向</text>
+      </view>
+      <view class="advice-list">
+        <view class="advice-item" wx:for="{{report.suggestions}}" wx:key="index">
+          <text class="rule-tag {{item.tagClass}}">{{item.ruleId}}</text>
+          <text class="advice-desc">{{item.text}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部操作双按钮（1:1 均分宽度，绝不超出画框） -->
+    <view class="report-actions">
+      <view class="tl-btn tl-btn-secondary flex-1" hover-class="tl-btn-hover" bindtap="copyMarkdown">
+        复制 Markdown
+      </view>
+      <view class="tl-btn tl-btn-primary flex-1" hover-class="tl-btn-hover" bindtap="saveToHistory">
+        存入本地归档
+      </view>
+    </view>
+  </view>
+
+  <!-- ==================== 3. 全文批注面板 ==================== -->
+  <view class="view-section" wx:if="{{activeTab === 'annotate' && report}}">
+    <!-- 分类筛选条 -->
+    <view class="hl-filter-bar">
+      <view
+        wx:for="{{hlFilters}}"
+        wx:key="id"
+        class="hl-filter-chip {{hlFilter === item.id ? 'active' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onSelectHlFilter"
+      >
+        {{item.name}}
+      </view>
+    </view>
+
+    <!-- 原文染色预览卡片 -->
+    <view class="card">
+      <view class="card-header">
+        <text class="card-title">原文染色预览</text>
+        <text class="muted-text">点击高亮词句查看原因</text>
+      </view>
+      <view class="annotated-article">
+        <view class="annotated-title" wx:if="{{report.title}}">{{report.title}}</view>
+        <view class="annotated-body">
+          <block wx:for="{{segments}}" wx:key="index">
+            <text
+              wx:if="{{item.isHl}}"
+              class="hl-span hl-{{item.type}}"
+              data-item="{{item}}"
+              bindtap="onTapHighlight"
+            >{{item.text}}</text>
+            <text wx:else class="normal-span">{{item.text}}</text>
+          </block>
+        </view>
+      </view>
+    </view>
+
+    <!-- 命中文段清单 -->
+    <view class="card">
+      <view class="card-header">
+        <text class="card-title">命中文段清单 ({{filteredHighlights.length}} 处)</text>
+      </view>
+      <view class="annotate-list" wx:if="{{filteredHighlights.length}}">
+        <view
+          class="annotate-card type-{{item.type}}"
+          wx:for="{{filteredHighlights}}"
+          wx:key="uid"
+          data-item="{{item}}"
+          bindtap="showRuleDetail"
+        >
+          <view class="annotate-head">
+            <text class="rule-tag {{item.tagClass}}">{{item.ruleId}}</text>
+            <text class="annotate-label">{{item.label}}</text>
+          </view>
+          <text class="annotate-snippet" wx:if="{{item.snippet}}">“{{item.snippet}}”</text>
+          <text class="annotate-msg">{{item.msg}}</text>
+        </view>
+      </view>
+      <view class="clean-pass" wx:else>
+        当前筛选类别下无命中项
+      </view>
+    </view>
+  </view>
+</view>

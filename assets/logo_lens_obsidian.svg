@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- 曜石深邃渐变 -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c1b18" />
+      <stop offset="100%" stop-color="#0f0e0c" />
+    </linearGradient>
+
+    <!-- 主透镜环金属微光渐变 -->
+    <linearGradient id="ring-grad" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95" />
+      <stop offset="50%" stop-color="#c5c1b5" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#8c887b" stop-opacity="0.2" />
+    </linearGradient>
+
+    <!-- 内部聚光圈青翠/墨翠渐变 -->
+    <linearGradient id="focus-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="50%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+
+    <!-- 柔和辉光滤镜 -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="32" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <!-- 核心微光滤镜 -->
+    <filter id="core-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="16" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- 背景：适合微信小程序自动裁切圆形，同时四角圆润 -->
+  <rect width="1024" height="1024" fill="url(#bg-grad)" />
+
+  <!-- 环形微妙内衬网格/星轨细线 -->
+  <circle cx="512" cy="512" r="380" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1.5" />
+  <circle cx="512" cy="512" r="320" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="2" stroke-dasharray="6 8" />
+  <circle cx="512" cy="512" r="230" fill="none" stroke="#ffffff" stroke-opacity="0.09" stroke-width="2" />
+
+  <!-- 聚焦准心刻度线 (Crosshairs) -->
+  <line x1="512" y1="168" x2="512" y2="216" stroke="#c5c1b5" stroke-opacity="0.4" stroke-width="3" stroke-linecap="round" />
+  <line x1="512" y1="808" x2="512" y2="856" stroke="#c5c1b5" stroke-opacity="0.4" stroke-width="3" stroke-linecap="round" />
+  <line x1="168" y1="512" x2="216" y2="512" stroke="#c5c1b5" stroke-opacity="0.4" stroke-width="3" stroke-linecap="round" />
+  <line x1="808" y1="512" x2="856" y2="512" stroke="#c5c1b5" stroke-opacity="0.4" stroke-width="3" stroke-linecap="round" />
+
+  <!-- 透镜外环：深具质感的精工圆环 -->
+  <circle cx="512" cy="512" r="280" fill="none" stroke="url(#ring-grad)" stroke-width="18" filter="url(#glow)" />
+  <circle cx="512" cy="512" r="280" fill="none" stroke="url(#ring-grad)" stroke-width="8" />
+
+  <!-- 几何透镜光圈叶片 (Aperture Focus Motif) -->
+  <!-- 通过几何多边形与旋转营造相机光圈 / 审视透镜质感 -->
+  <g transform="translate(512, 512)">
+    <!-- 8个几何光圈折角 -->
+    <path d="M 0 -190 L 134 -134 L 70 -60 Z" fill="#ffffff" fill-opacity="0.07" />
+    <path d="M 134 -134 L 190 0 L 60 70 Z" fill="#ffffff" fill-opacity="0.05" />
+    <path d="M 190 0 L 134 134 L -60 70 Z" fill="#ffffff" fill-opacity="0.07" />
+    <path d="M 134 134 L 0 190 L -70 60 Z" fill="#ffffff" fill-opacity="0.05" />
+    <path d="M 0 190 L -134 134 L -70 -60 Z" fill="#ffffff" fill-opacity="0.07" />
+    <path d="M -134 134 L -190 0 L -60 -70 Z" fill="#ffffff" fill-opacity="0.05" />
+    <path d="M -190 0 L -134 -134 L 60 -70 Z" fill="#ffffff" fill-opacity="0.07" />
+    <path d="M -134 -134 L 0 -190 L 70 -60 Z" fill="#ffffff" fill-opacity="0.05" />
+  </g>
+
+  <!-- 内核心透镜圈 -->
+  <circle cx="512" cy="512" r="140" fill="#141413" stroke="url(#focus-grad)" stroke-width="8" filter="url(#core-glow)" />
+
+  <!-- 核心聚焦点：双菱形交叠 (Focus Spark & Pen Tip) 象征审阅敏锐与文字之光 -->
+  <g transform="translate(512, 512)">
+    <!-- 聚焦光晕 -->
+    <circle cx="0" cy="0" r="54" fill="url(#focus-grad)" fill-opacity="0.22" filter="url(#core-glow)" />
+
+    <!-- 中心纯净四芒星菱形核心 -->
+    <path d="M 0 -72 Q 0 0 72 0 Q 0 0 0 72 Q 0 0 -72 0 Q 0 0 0 -72 Z" fill="#ffffff" />
+    <circle cx="0" cy="0" r="14" fill="#10b981" />
+  </g>
+
+  <!-- 边缘微小高光点綴 -->
+  <circle cx="314" cy="314" r="8" fill="#ffffff" fill-opacity="0.75" />
+</svg>

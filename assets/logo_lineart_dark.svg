@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- 曜石墨黑背景 -->
+  <rect width="1024" height="1024" fill="#141413" />
+
+  <g transform="translate(0, -10)">
+    <!-- 极简白色圆环 -->
+    <circle cx="470" cy="460" r="210" fill="none" stroke="#F4F4F0" stroke-width="28" stroke-linecap="round" />
+
+    <!-- 内部：一笔画极简大写 "T" 与 对焦点 (Text & Focus) -->
+    <!-- T 的横梁 -->
+    <line x1="360" y1="410" x2="580" y2="410" stroke="#F4F4F0" stroke-width="26" stroke-linecap="round" />
+    <!-- T 的竖梁 -->
+    <line x1="470" y1="410" x2="470" y2="540" stroke="#F4F4F0" stroke-width="26" stroke-linecap="round" />
+
+    <!-- 观察对焦十字准心（极细微的线） -->
+    <circle cx="470" cy="460" r="85" fill="none" stroke="#60A5FA" stroke-width="12" stroke-dasharray="14 18" stroke-linecap="round" />
+
+    <!-- 极简笔尖手柄 -->
+    <path d="M 618 608 L 740 730" stroke="#F4F4F0" stroke-width="28" stroke-linecap="round" />
+    <circle cx="770" cy="760" r="28" fill="#F4F4F0" />
+  </g>
+</svg>

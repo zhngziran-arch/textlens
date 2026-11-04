@@ -1,0 +1,99 @@
+.section-header {
+  margin-bottom: 18rpx;
+  padding: 0 4rpx;
+}
+
+.rule-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.rule-block {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #EFECE6;
+}
+
+.rule-block:first-child {
+  padding-top: 4rpx;
+}
+
+.rule-block:last-child {
+  border-bottom: none;
+  padding-bottom: 4rpx;
+}
+
+.rule-top {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 10rpx;
+  flex-wrap: wrap;
+}
+
+.rule-name {
+  font-size: 27rpx;
+  font-weight: 700;
+  color: #141413;
+}
+
+.target-tag {
+  font-size: 21rpx;
+  font-weight: 600;
+  color: #0369A1;
+  background: #E0F2FE;
+  padding: 4rpx 12rpx;
+  border-radius: 99rpx;
+  margin-left: auto;
+}
+
+.rule-basis {
+  font-size: 24rpx;
+  color: #6E6C65;
+  display: block;
+  margin-bottom: 8rpx;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.rule-advice {
+  font-size: 24rpx;
+  color: #141413;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 10rpx;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.chip-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  margin-top: 8rpx;
+}
+
+.word-chip {
+  font-size: 22rpx;
+  background: #FAF9F5;
+  border: 1rpx solid #E5E3DC;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  color: #4A4944;
+}
+
+.privacy-card {
+  background: #FAF9F5;
+}
+
+.privacy-p {
+  font-size: 24rpx;
+  color: #5C5B55;
+  display: block;
+  margin-bottom: 12rpx;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.privacy-p:last-child {
+  margin-bottom: 0;
+}

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- 暖白纸面背景（与网站主题一致） -->
+  <rect width="1024" height="1024" fill="#F6F5F1" />
+
+  <!-- 主体图形：居中、适合圆形裁切 -->
+  <g transform="translate(0, -10)">
+    <!-- 极简透镜圆环（单线粗度 26px，柔和圆角端点） -->
+    <circle cx="470" cy="460" r="210" fill="#FFFFFF" stroke="#1A1A18" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- 镜片内的三道极简文稿横线（代表文字/Text） -->
+    <!-- 第一条：长线 -->
+    <line x1="380" y1="400" x2="560" y2="400" stroke="#1A1A18" stroke-width="20" stroke-linecap="round" />
+    <!-- 第二条：中长线 -->
+    <line x1="380" y1="460" x2="510" y2="460" stroke="#1A1A18" stroke-width="20" stroke-linecap="round" />
+    <!-- 第三条：带聚焦高亮的小短线 -->
+    <line x1="380" y1="520" x2="450" y2="520" stroke="#1A1A18" stroke-width="20" stroke-linecap="round" />
+
+    <!-- 透镜手柄：巧妙化作一支极简钢笔尖（Pen Nib）斜向 45 度伸出 -->
+    <!-- 手柄颈部连接环 -->
+    <path d="M 618 608 L 680 670" stroke="#1A1A18" stroke-width="26" stroke-linecap="round" />
+    
+    <!-- 钢笔尖几何轮廓 -->
+    <path d="M 680 670 L 735 690 L 810 810 L 690 735 Z" fill="#FFFFFF" stroke="#1A1A18" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- 笔尖中缝刻线 -->
+    <line x1="750" y1="750" x2="710" y2="710" stroke="#1A1A18" stroke-width="16" stroke-linecap="round" />
+    <!-- 笔尖墨孔（小圆圈） -->
+    <circle cx="705" cy="705" r="9" fill="#1A1A18" />
+
+    <!-- 灵动点缀：镜片右上角的极简小四芒星（象征审阅之光 / 灵感火花） -->
+    <g transform="translate(630, 290)">
+      <line x1="0" y1="-26" x2="0" y2="26" stroke="#0F766E" stroke-width="12" stroke-linecap="round" />
+      <line x1="-26" y1="0" x2="26" y2="0" stroke="#0F766E" stroke-width="12" stroke-linecap="round" />
+      <circle cx="0" cy="0" r="4" fill="#0F766E" />
+    </g>
+  </g>
+</svg>

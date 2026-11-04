@@ -1,0 +1,78 @@
+<view class="container">
+  <view class="section-header">
+    <view class="page-title">公开规则与词库手册</view>
+    <view class="page-subtitle">当前共收录 {{totalWordCount}} 条高频套话、行业黑话、模板句式与平台词表，100% 透明可查</view>
+  </view>
+
+  <!-- 1. 通用文风、黑话、说教腔与连接词表 -->
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">通用套话与 AI 特征词库</text>
+      <text class="muted-text">共 {{common.lexicons.length}} 大类</text>
+    </view>
+    <view class="rule-list">
+      <view class="rule-block" wx:for="{{common.lexicons}}" wx:key="id">
+        <view class="rule-top">
+          <text class="rule-tag tag-ai">{{item.id}}</text>
+          <text class="rule-name">{{item.name}}</text>
+          <text class="target-tag">{{item.itemCount}} 项</text>
+        </view>
+        <text class="rule-basis">识别逻辑：{{item.basis}}</text>
+        <text class="rule-advice" wx:if="{{item.advice}}">改写建议：{{item.advice}}</text>
+        <view class="chip-cloud" wx:if="{{item.items && item.items.length}}">
+          <text class="word-chip" wx:for="{{item.items}}" wx:for-item="w" wx:for-index="wIdx" wx:key="wIdx">{{w}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 2. 四大平台专属特征词库 -->
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">各平台专属规范与雷区词表</text>
+      <text class="muted-text">{{platforms.length}} 大平台</text>
+    </view>
+    <view class="rule-list">
+      <block wx:for="{{platforms}}" wx:for-item="pf" wx:for-index="pfIdx" wx:key="id">
+        <view class="rule-block" wx:for="{{pf.lexicons}}" wx:for-item="lex" wx:for-index="lexIdx" wx:key="id">
+          <view class="rule-top">
+            <text class="rule-tag tag-pf">{{lex.id}}</text>
+            <text class="rule-name">{{pf.name}} · {{lex.name}}</text>
+            <text class="target-tag">{{lex.words.length}} 词</text>
+          </view>
+          <text class="rule-basis">依据：{{lex.basis}}</text>
+          <text class="rule-advice" wx:if="{{lex.advice}}">建议：{{lex.advice}}</text>
+          <view class="chip-cloud" wx:if="{{lex.words}}">
+            <text class="word-chip" wx:for="{{lex.words}}" wx:for-item="pw" wx:for-index="pwIdx" wx:key="pwIdx">{{pw}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 3. 信息增量五维 -->
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">信息增量五维标准</text>
+    </view>
+    <view class="rule-list">
+      <view class="rule-block" wx:for="{{common.info}}" wx:key="id">
+        <view class="rule-top">
+          <text class="rule-tag tag-info">{{item.id}}</text>
+          <text class="rule-name">{{item.label}}</text>
+          <text class="target-tag">建议 ≥{{item.target}}处/千字</text>
+        </view>
+        <text class="rule-basis">{{item.basis}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 4. 架构与隐私说明 -->
+  <view class="card privacy-card">
+    <view class="card-header">
+      <text class="card-title">架构与隐私说明</text>
+    </view>
+    <text class="privacy-p">• 纯本地计算：小程序内所有文本分词、规则匹配与历史归档均在你的手机本地运行，未接入任何外部服务器，文稿绝不外传。</text>
+    <text class="privacy-p">• 适用范围：检测分数反映文本的语言学多样性、信息密度与公开社区规范匹配度，作为创作自检辅助参考。</text>
+  </view>
+</view>

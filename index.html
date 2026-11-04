@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TextLens · 创作透镜 — 文风节奏、信息密度与多篇同质化审阅台</title>
+  <meta name="description" content="面向中文创作者的开源文本审阅工具：检测 AI 套话密度、句长节奏波动、五维信息增量与多篇结构同质化，支持公众号、小红书、知乎、今日头条体裁切换。" />
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M16.5 16.5L21 21" stroke-linecap="round" />
+            <circle cx="11" cy="11" r="2.5" fill="currentColor" stroke="none" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <strong>TextLens</strong>
+          <span>创作透镜</span>
+        </div>
+      </div>
+
+      <nav class="nav-segmented" role="tablist" aria-label="主导航">
+        <span class="nav-glider" id="nav-glider" aria-hidden="true"></span>
+        <button class="tab active" data-tab="single" role="tab">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/><path d="M8 9.5h5M8 12h3"/></svg>
+          <span>单篇审阅</span>
+        </button>
+        <button class="tab" data-tab="batch" role="tab">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="11" height="13" rx="2"/><path d="M9 20h9a2 2 0 0 0 2-2V8"/></svg>
+          <span>多篇对比</span>
+        </button>
+        <button class="tab" data-tab="history" role="tab">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19h16"/><path d="M6 15l4-5 4 3 4-6"/><circle cx="18" cy="7" r="1.5"/></svg>
+          <span>流量规律</span>
+        </button>
+        <button class="tab" data-tab="rules" role="tab">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v16H6.5A2.5 2.5 0 0 0 4 21.5V5.5z"/><path d="M8 8h7M8 12h5"/></svg>
+          <span>规则手册</span>
+        </button>
+      </nav>
+
+      <div class="platform-switcher" aria-label="体裁配置">
+        <div class="pf-pills" id="platform-pills"></div>
+        <select id="platform-select" class="pf-select-mobile" aria-label="选择平台体裁"></select>
+      </div>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <!-- 1. 单篇审阅 -->
+    <section id="tab-single" class="view-panel active">
+      <div class="section-intro">
+        <div class="intro-left">
+          <h1>单篇文风与信息增量审阅</h1>
+          <p id="platform-desc">量化审视连接词与套话密度、句式节奏波动、五维信息增量及平台体裁契合度。</p>
+        </div>
+        <div class="intro-actions">
+          <button id="single-demo-bad" class="btn-subtle">示例：模板腔文稿</button>
+          <button id="single-demo-good" class="btn-subtle">示例：高信息量实测稿</button>
+          <button id="single-clear" class="btn-subtle btn-danger-text">清空</button>
+        </div>
+      </div>
+
+      <div class="studio-grid">
+        <!-- 左栏：文稿纸张（编辑态 / 批注态无缝切换） -->
+        <div class="surface-card manuscript-shell">
+          <div class="shell-bar">
+            <div class="mode-switch" role="tablist" aria-label="文稿视图模式">
+              <button class="mode-btn active" id="btn-mode-write" data-ms-mode="write">编辑文稿</button>
+              <button class="mode-btn" id="btn-mode-annotate" data-ms-mode="annotate" disabled>原文批注 <span class="mode-count" id="ms-hl-count">0</span></button>
+            </div>
+            <span class="counter-pill" id="single-counter">0 字</span>
+          </div>
+
+          <!-- 编辑态 -->
+          <div id="ms-write-pane" class="ms-pane active">
+            <input id="single-title" class="ms-title-input" placeholder="输入文章或笔记标题…" autocomplete="off" />
+            <div class="ms-meta-strip">
+              <label class="meta-field">
+                <span>发布日期</span>
+                <input id="single-date" type="date" />
+              </label>
+              <label class="meta-field">
+                <span>推荐阅读数</span>
+                <input id="single-reads" type="number" min="0" placeholder="选填，用于规律对比" />
+              </label>
+            </div>
+            <textarea id="single-content" class="ms-textarea" rows="15" placeholder="在此粘贴或撰写正文（至少 50 字）。&#10;&#10;点击右下角「开始审阅」后，这里会自动切换为带彩色下划线的批注视图，标出每一处高频连接词、空泛套话、说教金句、节奏单调段与信息稀薄段落。"></textarea>
+            <div class="ms-footer">
+              <span class="kbd-hint">快捷键 <kbd>Ctrl</kbd> + <kbd>Enter</kbd> 立即审阅</span>
+              <div class="btn-group">
+                <button id="single-save" class="btn-secondary">存入历史库</button>
+                <button id="single-run" class="btn-primary">开始审阅诊断</button>
+              </div>
+            </div>
+            <!-- 平台体裁审阅基准条（随平台实时切换） -->
+            <div id="single-spec-card" class="platform-bench-strip"></div>
+          </div>
+
+          <!-- 批注态 -->
+          <div id="ms-annotate-pane" class="ms-pane">
+            <div id="single-annotated-slot"></div>
+            <div class="ms-footer">
+              <span class="kbd-hint">点击任意彩色词句查看改写建议</span>
+              <div class="btn-group">
+                <button id="btn-back-edit" class="btn-secondary">← 返回继续修改</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右栏：诊断仪表盘 -->
+        <div class="surface-card inspector-shell">
+          <div class="shell-bar">
+            <span class="shell-title">诊断仪表盘</span>
+            <button id="single-copy-md" class="btn-subtle" disabled>复制 Markdown 报告</button>
+          </div>
+          <div id="single-report" class="inspector-body">
+            <div class="empty-state">
+              <div class="empty-illustration" aria-hidden="true">
+                <svg viewBox="0 0 120 80" width="96" height="64" fill="none">
+                  <rect x="8" y="10" width="60" height="60" rx="8" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3" />
+                  <circle cx="88" cy="40" r="22" stroke="currentColor" stroke-width="1.5" />
+                  <path d="M88 26v14l9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  <path d="M20 26h36M20 38h28M20 50h32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5" />
+                </svg>
+              </div>
+              <h3>等待文稿输入</h3>
+              <p>在左侧粘贴正文并点击「开始审阅」，或直接点击右上角示例按钮查看完整的多维体检与五维雷达图。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 多篇对比 -->
+    <section id="tab-batch" class="view-panel">
+      <div class="section-intro">
+        <div class="intro-left">
+          <h1>近期多篇同质化与结构对比</h1>
+          <p>对比同一账号 2–10 篇近期文稿，识别选题撞车、开篇/收尾模板固化与跨篇重复表述。</p>
+        </div>
+        <div class="intro-actions">
+          <button id="batch-add" class="btn-subtle">＋ 添加文稿</button>
+          <button id="batch-from-hist" class="btn-subtle">从历史库调取</button>
+          <button id="batch-demo" class="btn-subtle">示例：日更 4 篇对比</button>
+          <button id="batch-clear" class="btn-subtle btn-danger-text">清空</button>
+        </div>
+      </div>
+
+      <div class="studio-grid">
+        <div class="surface-card manuscript-shell">
+          <div class="shell-bar">
+            <span class="shell-title">对比文稿组 <span class="muted-xs" id="batch-count"></span></span>
+            <span class="muted-xs">点击卡片栏可折叠或展开</span>
+          </div>
+          <div id="batch-list" class="batch-deck"></div>
+          <div class="ms-footer">
+            <span class="kbd-hint">建议放入同一账号连续发布的 3–6 篇正文</span>
+            <div class="btn-group">
+              <button id="batch-save-all" class="btn-secondary">全部存入历史库</button>
+              <button id="batch-run" class="btn-primary">开始对比分析</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="surface-card inspector-shell">
+          <div class="shell-bar">
+            <span class="shell-title">同质化矩阵与结构诊断</span>
+            <button id="batch-copy-md" class="btn-subtle" disabled>复制 Markdown 报告</button>
+          </div>
+          <div id="batch-report" class="inspector-body">
+            <div class="empty-state">
+              <h3>等待多篇文稿</h3>
+              <p>在左侧填入至少 2 篇文稿后点击「开始对比分析」，或点击右上角「示例：日更 4 篇对比」立即查看同质化热力矩阵。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 流量规律 -->
+    <section id="tab-history" class="view-panel">
+      <div class="section-intro">
+        <div class="intro-left">
+          <h1>历史归档与推荐流量相关性</h1>
+          <p>结合已发文章的推荐阅读数，计算文本特征（相对前 5 篇的选题重合度、独有度、信息覆盖率等）与流量的秩相关系数。</p>
+        </div>
+        <div class="intro-actions">
+          <button id="hist-seed-demo" class="btn-subtle">载入演示数据（7 篇）</button>
+          <button id="hist-export" class="btn-subtle">导出备份</button>
+          <label class="btn-subtle file-trigger">导入备份<input id="hist-import" type="file" accept=".json,application/json" hidden /></label>
+          <button id="hist-clear" class="btn-subtle btn-danger-text">清空归档</button>
+        </div>
+      </div>
+
+      <div class="surface-card block-card">
+        <div class="shell-bar">
+          <span class="shell-title">特征与推荐流量相关性图谱（Spearman ρ）</span>
+          <span class="muted-xs">满 6 篇含推荐阅读数的文稿自动生成</span>
+        </div>
+        <div id="insights-box" class="card-pad"></div>
+      </div>
+
+      <div class="surface-card block-card">
+        <div class="shell-bar">
+          <span class="shell-title">本地文稿归档</span>
+          <span class="muted-xs">直接修改日期或推荐阅读数，失焦后自动保存并更新上方图谱</span>
+        </div>
+        <div id="history-table" class="card-pad"></div>
+      </div>
+    </section>
+
+    <!-- 4. 规则手册 -->
+    <section id="tab-rules" class="view-panel">
+      <div class="section-intro">
+        <div class="intro-left">
+          <h1>开源规则与体裁配置手册</h1>
+          <p>所有词表、正则、权重与阈值均公开透明，支持直接修改 JSON 配置文件扩展规则。</p>
+        </div>
+      </div>
+      <div id="rules-box"></div>
+    </section>
+  </main>
+
+  <div id="popover" class="popover hidden" role="tooltip"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>TextLens · 创作透镜</span>
+      <span class="dot-sep">·</span>
+      <span>MIT Open Source</span>
+      <span class="dot-sep">·</span>
+      <span>浏览器本地计算</span>
+    </div>
+  </footer>
+
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>
