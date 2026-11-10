@@ -15,6 +15,10 @@
 
 👉 **[点击立即在线体验 TextLens 创作透镜](https://zhngziran-arch.github.io/textlens/)**
 
+欢迎关注我的公众号：非典型思考者，这是一个以深度时评为主的个人账号，我经常会发一些关于当下思考的文章，公众号里面有"创作透镜"的小程序版，可以日常在微信上使用！
+<img width="430" height="430" alt="bcf6f153a0ac29464d7f6733e32d5af3" src="https://github.com/user-attachments/assets/49897786-76c1-43ba-ab55-1a16a4b6844f" />
+
+
 > 💡 **本检测工具暂时没有接入第三方API**：所有文本分词、统计、高亮批注与多篇比对均在你的**浏览器本地内存**中完成（基于原生 JS + IndexedDB），打开浏览器 F12 的 Network（网络）面板即可验证：**你的内容不会被上传到服务器，只有那你自己能看到**。
 
 ---
